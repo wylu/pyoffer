@@ -27,7 +27,24 @@ class Solution:
     """
     @classmethod
     def merge(cls, arr, left, mid, right):
-        pass
+        i, j, cnt, tmp = left, mid + 1, 0, []
+        while i <= mid and j <= right:
+            if arr[i] <= arr[j]:
+                tmp.append(arr[i])
+                i += 1
+            else:
+                tmp.append(arr[j])
+                j += 1
+                cnt += mid + 1 - i
+        while i <= mid:
+            tmp.append(arr[i])
+            i += 1
+        while j <= right:
+            tmp.append(arr[j])
+            j += 1
+        arr[left: right + 1] = tmp
+        del tmp
+        return cnt
 
     @classmethod
     def recursive(cls, arr, left, right):
@@ -35,8 +52,8 @@ class Solution:
             mid = (left + right) // 2
             cnt_left = Solution.recursive(arr, left, mid)
             cnt_right = Solution.recursive(arr, mid + 1, right)
-            cnt = Solution.merge(arr, left, mid, right)
-            return (cnt_left + cnt_right + cnt) % Solution.MOD
+            cnt_merge = Solution.merge(arr, left, mid, right)
+            return (cnt_left + cnt_right + cnt_merge) % Solution.MOD
         return 0
 
     def InversePairs(self, data):

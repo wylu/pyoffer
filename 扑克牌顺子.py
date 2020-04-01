@@ -32,7 +32,7 @@ class Solution:
 
         numbers.sort()
 
-        p1, p2 = zero_cnt, zero_cnt + 1 
+        p1, p2 = zero_cnt, zero_cnt + 1
         gap_cnt = 0
         while p2 < len(numbers):
             if numbers[p1] == numbers[p2]:

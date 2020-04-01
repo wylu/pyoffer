@@ -24,15 +24,26 @@ class Solution:
     的结果是一样的。接着考虑第二步进位，对0+0,0+1,1+0,而言，都不会产生进位，只有
     1+1时，会向前产生一个进位，结果等同于两个数先做位与运算，然后再向左移动一位。第三
     步相加过程依然重复前面两步，直到不产生进位为止。
+
+    ```python
+    >>> print('{:b}'.format(-15 & 0xFFFFFFFF))
+    11111111111111111111111111110001
+    >>> print('{:032b}'.format((-15 & 0xFFFFFFFF) ^ 0xFFFFFFFF))
+    00000000000000000000000000001110
+    >>> print('{:032b}'.format(~((-15 & 0xFFFFFFFF) ^ 0xFFFFFFFF)))
+    -0000000000000000000000000001111
+    ```
     """
     def Add(self, num1, num2):
         while num2:
-            sum = num1 ^ num2
-            carry = (num1 & num2) << 1
+            sum = (num1 ^ num2) & 0xFFFFFFFF
+            carry = ((num1 & num2) << 1) & 0xFFFFFFFF
             num1 = sum
             num2 = carry
-        return num1
+        return num1 if num1 <= 0x7FFFFFFF else ~(num1 ^ 0xFFFFFFFF)
 
 
 if __name__ == '__main__':
     print(Solution().Add(5, 17))
+    print(Solution().Add(5, -1))
+    print(Solution().Add(-6, -1))
